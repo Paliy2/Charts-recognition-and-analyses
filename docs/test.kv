@@ -1,0 +1,43 @@
+<MyTest>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: .1
+        Widget:
+            size_hint_y: 0.1
+        Label:
+            id: imglbl
+            background_color: (0, 122, 235, 52)
+            font_size: 18
+            text: 'Take photo of your chart'
+            size_hint: .8, .1
+            pos_hint: {'x': .1, 'y': 0.8}
+
+        Camera:
+            id: camera
+            size_hint: 0.8, 0.5
+            pos_hint: {'x': .1, 'y': .25}
+            resolution: 600, 600
+            play: True
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.8, 0.05
+            pos_hint: {'x': .1, 'y': .1}
+
+            Button:
+                id: img_btn
+                text: 'Take Photo'
+                size_hint_x: 0.35
+#                pos_hint: {'x': 0.1, 'y': 1}
+                on_press: root.onCameraClick()
+
+            Widget:
+                size_hint_x: 0.1
+            Button:
+                id: load_btn
+                text: 'Load File'
+                size_hint_x: 0.35
+#                pos_hint: {'x': 0.6, 'y': 1}
+                on_press: root.load_file()
+        Widget:
+            size_hint_y: 0.1
