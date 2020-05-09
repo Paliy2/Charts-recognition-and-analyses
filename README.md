@@ -16,7 +16,7 @@ root:<br>
   --app.py<br>
       main file that launches the program. Uses kivy as main library<br>
     --check_chart.py<br>
-        modeule to check if given photo is a chart. IMPORTANT! Needs a model that cant't be loaded in GitHub, so it's a good for you to create your own. <br>
+        modeule to check if given photo is a chart. IMPORTANT! Needs a model that cant't be loaded in GitHub,<br> so it's a good for you to create your own. <br>
      --crop_black_background.py<br>
         short module with some functions to make photo look more Graph-ish<br>
     --test.kv<br>
