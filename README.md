@@ -35,8 +35,27 @@ root:
   other unimportant temp docs<br>
 </pre>
 
-Using app will be easu for you as all buttons say it for you :
+Using app will be easy for you as all buttons say it for you, even now you are able to interact with some beta-interface :
 
 <img src="https://github.com/Paliy2/sites/blob/master/img/beta.jpg">
 
-Even now you are able to differ any graph from human or dog or anything else. We have cosy and simple interface, so you can enjoy now. Just download files and stay home)
+To ckeck realization, just save your data into 2D numpy array and "feed" it to the GraphADT. Some examples are shown in master branch for a short time now.
+
+Also We are going to make it more usable for everyone, so peple can use our algorithms to photoGraph their everyday life. For example, here you can see image of a pencil:
+
+<img src="https://github.com/Paliy2/sites/blob/master/img/pencil.jpg">
+
+and how app see it now: 
+
+<img src="https://github.com/Paliy2/sites/blob/master/img/pencil_res.png">
+
+
+Differnece isn't great, but all functionality we nned to add is to remove the noise from picture and build the grpah. Then we plan to extract the formula of an item, so you can save the whole world data easily just in one row!
+
+Yeah, now it looks terrible, here you see digitized form of the pencil above:
+
+<img src="https://github.com/Paliy2/sites/blob/master/img/reveal.png">
+
+In the close future we are going to finish this project, so you can use it easily. 
+
+But even now you are able to differ any graph from human or dog or anything else. We have cosy and simple interface, so you can enjoy now. Just download files and stay home)
