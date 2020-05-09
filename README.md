@@ -34,4 +34,9 @@ root:
          to differ chart from another image 
   other unimportant temp docs<br>
 </pre>
+
+Using app will be easu for you as all buttons say it for you :
+
+<img src="https://github.com/Paliy2/sites/blob/master/img/beta.jpg">
+
 Even now you are able to differ any graph from human or dog or anything else. We have cosy and simple interface, so you can enjoy now. Just download files and stay home)
