@@ -72,6 +72,7 @@ class GraphADT:
     def show(self):
         """Show an image of graph on screen"""
         plt.imshow(self.img)
+        plt.savefig('pencil_res')
         plt.show()
 
     def plot(self, save=False):
@@ -82,9 +83,6 @@ class GraphADT:
         points = sorted(self.points.items())  # sorted by key, return a list of tuple
         x, y = zip(*points)  # unpack a list of pairs into two tuples
         plt.plot(x, y)
-        if save:
-            plt.savefig('figure')
-        plt.show()
 
     def to_csv(self, f_name='points.csv'):
         '''save point x and'''
@@ -123,11 +121,11 @@ class GraphADT:
         myline = np.linspace(int(max(p_x) * .8), int(max(p_x) * 1.2), min(p_y), max(p_y))
         if not axes:
             plt.axis('off')
-        if save:
-            plt.savefig('reveal')
         plt.plot(myline, mymodel(myline), linewidth=5)
         plt.plot(p_x, p_y, linewidth=5)
-
+        if save:
+            plt.savefig('reveal', bbox_inches='tight')
+            print('Saved!')
         plt.show()
 
     def simple_reveal(self, save=False):
@@ -138,7 +136,8 @@ class GraphADT:
         plt.plot(X, Y)
         self.plot()
         if save:
-            plt.savefig('regression')
+            plt.savefig('regression', bbox_inches='tight')
+            print('Regression saved!')
         plt.show()
 
     def get_a_b_linear_regr(self):
