@@ -1,43 +1,254 @@
-<MyTest>:
-    BoxLayout:
-        orientation: 'vertical'
-        spacing: .1
-        Widget:
-            size_hint_y: 0.1
-        Label:
-            id: imglbl
-            background_color: (0, 122, 235, 52)
-            font_size: 18
-            text: 'Take photo of your chart'
-            size_hint: .8, .1
-            pos_hint: {'x': .1, 'y': 0.8}
+#:import Factory kivy.factory.Factory
 
+<MainScreen>:
+    canvas.before:
+        Color:
+            rgba: 204/255, 204/255, 204/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        opacity: 0.5
+#        size_hint_y: 1
+#        size_hint_x: 1
         Camera:
             id: camera
-            size_hint: 0.8, 0.5
-            pos_hint: {'x': .1, 'y': .25}
-            resolution: 600, 600
+#            allow_fullscreen: True
+#            pos_hint: {'x': .1, 'y': .25}
+#            size_hint_y: 1
+#            size_hint_x: 1
+            allow_stretch: True
+            keep_ratio: False
+            resolution: 360, 640
             play: True
 
+    BoxLayout:
+#        opacity: 0.5
+        orientation: 'vertical'
+        spacing: .1
+        Label:
+            size_hint_y: 0.1
+            text: 'PhotoGraph your picture!'
+#            font_size: 56
+            font_style: 'Bahnschrift'
+            canvas.before:
+                Color:
+                    rgba: 251/255, 176/255, 59/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+        Label:
+            id: imglbl
+            canvas.before:
+                Color:
+                    rgba: 102/255, 102/255, 102/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+#            font_size: 46
+            font_style: 'Bahnschrift'
+            text: ''
+            size_hint_y: .1
+#            pos_hint: {'x': .1, 'y': 0.8}
+        Widget:
+            size_hint_y: .1
+        Image:  # lIke a Camera span
+            source: '../images/border_red.png'
+            size_hint_y: 0.5
+            opacity: 0.3
+#            pos_hint: {'x': .1, 'y': .25}
+
+#        Camera:
+#            id: came
+#            size_hint_y: 0.5
+#            pos_hint: {'x': .1, 'y': .25}
+#            resolution: 180, 200
+#            play: True
+
+        Widget:
+            size_hint_y: .1
         BoxLayout:
+            size_hint_y: 0.1
             orientation: 'horizontal'
-            size_hint: 0.8, 0.05
-            pos_hint: {'x': .1, 'y': .1}
+            AnchorLayout:
+                size_hint_x: 1.2401
+                anchor_x: 'right'
+                anchor_y: 'center'
+                Button:
+                    id: img_btn
 
-            Button:
-                id: img_btn
-                text: 'Take Photo'
-                size_hint_x: 0.35
-#                pos_hint: {'x': 0.1, 'y': 1}
-                on_press: root.onCameraClick()
 
-            Widget:
-                size_hint_x: 0.1
-            Button:
-                id: load_btn
-                text: 'Load File'
-                size_hint_x: 0.35
-#                pos_hint: {'x': 0.6, 'y': 1}
-                on_press: root.load_file()
+                    size_hint: None, None
+                    size: 65, 65
+                    canvas.before:
+                        Color:
+                            rgb: 152/255, 152/255, 153/255, 1
+                        Ellipse:
+                            pos: self.pos
+                            size: self.size
+                    canvas.after:
+                        Color:
+                            rgb: 230/255, 230/255, 230/255, 1
+                        Ellipse:
+                            pos: self.pos[0] + 5, self.pos[1] + 5
+                            size: self.size[0] - 10, self.size[1] - 10
+                    background_color: 0, 0, 0, 0
+    #                 152/255, 152/255, 153/255, 1
+
+                    on_press:
+                        root.onCameraClick()
+                        app.rs.update_image()
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+                Button:
+                    id: loadbtn
+
+                    text: 'Load File'
+                    background_color: 1, 0, 0, .4
+                    size_hint: None, None
+                    size: 60, 60
+                    on_press: root.load_file()
+
+
         Widget:
             size_hint_y: 0.1
+
+
+<StartScreen>:
+    canvas.before:
+        Color:
+            rgba: 102/255, 102/255, 102/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        Widget:
+            size_hint_y: 0.1
+            canvas.before:
+                Color:
+                    rgba: 251/255, 176/255, 59/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+        Widget:
+            size_hint_y: 0.2
+        Image:
+            id: logo_img
+            size_hint_y: 0.2
+            source: '../images/logo.png'
+
+        Widget:
+            size_hint_y: 0.05
+        Button:
+            size_hint_y: 0.05
+            text: 'SpeedGraph'
+            on_press:
+                root.ids.label_start.text = 'Loading, please wait'
+            on_release:
+                root.switchToNextScreen()
+        Label:
+            id: label_start
+            size_hint_y: 0.4
+            text: 'Press to continue'
+
+
+<ResultScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: .1
+            text: 'Results'
+
+        Image:
+
+            id: selfie_img
+            nocache: True
+            source: root.img_source
+        BoxLayout:
+            size_hint_y: 0.2
+            orientation: 'horizontal'
+            Button:
+                text: 'Predict'
+                on_release: root.show_popup()
+                size_hint: .4, 1
+#                on_release: root.manager.current = 'popup_screen'
+            Button:
+                text: 'Save Plot'
+                size_hint: .4, 1
+                on_release: root.save_plot()
+        BoxLayout:
+            spacing: .1
+            size_hint_y: 0.2
+            orientation: 'horizontal'
+            Button:
+                text: 'Back'
+                size_hint: .35, 1
+
+                on_press: root.manager.current = 'main_screen'
+            Button:
+                text: 'Save csv'
+                size_hint: .35, 1
+
+                on_press: root.save_data()
+        Widget:
+            size_hint_y: .1
+
+
+<PopupScreen>:
+    FloatLayout:
+#        on_leave: root.current.manager = 'predict_screen'
+        Button:
+            text: 'Linear regression'
+            size_hint: .7, .2
+            pos_hint: {"x": .1, "y": .7}
+            on_release:
+                root.process_linear()
+                app.rs.popupWindow.dismiss()
+                app.ps.update_prediction_image()
+                app.sm.current = 'predict_screen'
+
+        Button:
+            text: 'Polynomial regression'
+            size_hint: .7, .2
+            pos_hint: {"x": .1, "y": .4}
+            on_release:
+                root.process_polynomial()
+                app.rs.popupWindow.dismiss()
+                app.ps.update_prediction_image()
+                app.sm.current = 'predict_screen'
+
+        Button:
+            text: 'AI prediction(Not Implemented)'
+            size_hint: .7, .2
+            pos_hint: {"x": .1, "y": .1}
+            on_release:
+                root.process_ai()
+                app.rs.popupWindow.dismiss()
+                app.ps.update_prediction_image()
+                app.sm.current = 'predict_screen'
+
+
+<PredictScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: .1
+            text: 'Yeah! you are here'
+        Image:
+            size_hint_y: .6
+            id: res_img
+            source: '../images/prediction.png'
+        BoxLayout:
+            spacing: .1
+            orientation: 'horizontal'
+            size_hint: .8, .2
+            pos_hint: {"x": .1, 'y': .1}
+            Button:
+                size_hint_y:
+                text: 'Back'
+                on_release: app.sm.current = 'result_screen'
+            Button:
+                text: 'Here will be save'
+                on_release: root.save_to_gallery()
