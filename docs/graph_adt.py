@@ -1,3 +1,8 @@
+# Files::
+# regression - plot with linear regression
+# figure -- current x and y
+# reveal -- polynomial regression
+
 import numpy as np
 import matplotlib.pylab as plt
 from this_dict import Dict
@@ -13,6 +18,9 @@ class GraphADT:
         points: numpy array
             points of an image to work with
         """
+        # for i in graph:
+        #     for j in i:
+        #         print(j)
         if read_name and read_name.endswith('.npy'):
             self.graph = self._read_npy(read_name)
         else:
@@ -21,7 +29,6 @@ class GraphADT:
         self.graph = self.convert_to_2d()
         # testing graph points
         self.points = self._convert_to_x_y()
-        # self.points[4] = 50
 
     def __str__(self):
         """print all points"""
@@ -46,6 +53,8 @@ class GraphADT:
         array2d = Array2D(len(self.graph), len(self.graph[0]))
         for y in range(len(self.graph)):
             for x in range(len(self.graph[0])):
+                # print(y, x)
+                # print('Graph', self.graph[y][x])
                 array2d[y, x] = self.graph[y][x]
         return array2d
 
@@ -72,38 +81,36 @@ class GraphADT:
     def show(self):
         """Show an image of graph on screen"""
         plt.imshow(self.img)
-        plt.savefig('pencil_res')
+        plt.savefig('../show_res')
         plt.show()
 
-    def plot(self, save=False):
-        """
-        Plot an image of the graph
-        self.dict is alwys dict of two itemx x: y"""
-
+    def plot(self):
         points = sorted(self.points.items())  # sorted by key, return a list of tuple
         x, y = zip(*points)  # unpack a list of pairs into two tuples
         plt.plot(x, y)
 
-    def to_csv(self, f_name='points.csv'):
+    def save_plot(self):
+        """
+        Plot an image of the graph
+        self.dict is alwys dict of two itemx x: y"""
+        self.plot()
+        plt.savefig('../saved_graph.png', bbox_inches='tight')
+        plt.clf()
+        # plt.plot(x, y)
+
+    def to_csv(self, f_name='../points.csv'):
         '''save point x and'''
         with open(f_name, 'w', encoding='utf-8') as f:
             for x, y in zip(self.keys, self.values):
                 f.write(str(x) + ';' + str(y) + '\n')
 
-    # def save(self, file='data.npy'):
-    #     '''save total graph'''
-    #     np.save(file, self.graph)
-
-    def _read_npy(self, file='data.npy'):
+    def _read_npy(self, file='../data.npy'):
         """read numpy data from txt file"""
-        # with open(file, 'r', encoding='utf-8') as f:
-        #     res = np.loadtxt(f)
-        # self.graph = res
         res = np.load(file, allow_pickle=True)
         self.graph = res
         return res
 
-    def reveal(self, axes=True, save=False):
+    def reveal(self, axes=True):
         """
         Create a short exact prediction
         for next 20% that can br in the graph
@@ -116,29 +123,29 @@ class GraphADT:
         p_y = list(self.values)
         p_x = list(self.keys)
 
-        mymodel = np.poly1d(np.polyfit(p_x, p_y, 3))  # 15 is good
+        mymodel = np.poly1d(np.polyfit(p_x, p_y, 10))  # 15 is good
         # predict behaviour in current decade
-        myline = np.linspace(int(max(p_x) * .8), int(max(p_x) * 1.2), min(p_y), max(p_y))
+        myline = np.linspace(int(min(p_x)), int(max(p_x) * 1.2), min(p_y), max(p_y))
         if not axes:
             plt.axis('off')
-        plt.plot(myline, mymodel(myline), linewidth=5)
         plt.plot(p_x, p_y, linewidth=5)
-        if save:
-            plt.savefig('reveal', bbox_inches='tight')
-            print('Saved!')
-        plt.show()
+        plt.plot(myline, mymodel(myline), linewidth=5)
 
-    def simple_reveal(self, save=False):
+        plt.savefig('../prediction.png', bbox_inches='tight')
+        print('Saved reveal to ../prediction.png!')
+        plt.clf()
+        # plt.show()
+
+    def simple_reveal(self):
         """Make linear regression of given graph"""
         a, b = self.get_a_b_linear_regr()
         X = [0, max(self.keys) * 1.05]
         Y = [a, a + b * X[1]]
         plt.plot(X, Y)
         self.plot()
-        if save:
-            plt.savefig('regression', bbox_inches='tight')
-            print('Regression saved!')
-        plt.show()
+        plt.savefig('../prediction.png', bbox_inches='tight')
+        print('Regression saved to prediction.png!')
+        plt.clf()
 
     def get_a_b_linear_regr(self):
         """
@@ -176,21 +183,3 @@ class GraphADT:
     @property
     def values(self):
         return self.points.values()
-
-
-if __name__ == '__main__':
-    # data = np.load('data.npy')
-    data = [[1, 0]]
-    graph = GraphADT(data)
-    graph._convert_to_x_y()
-    # graph.plot(save=True)
-    # print('Plotted')
-    # graph.simple_reveal()
-    graph.reveal()
-    # s = graph._read_npy()
-    # graph.show()
-
-# Files::
-# regression - plot with linear regression
-# figure -- current x and y
-# reveal -- polynomial regression
