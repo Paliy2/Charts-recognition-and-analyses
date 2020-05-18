@@ -39,18 +39,18 @@ To check the realization, just save your data into 2D numpy array and "feed" it 
 
 Also We are going to make it more usable for everyone, so peple can use our algorithms to photoGraph their everyday life. For example, here you can see image of a pencil:
 
-<a href='https://youtu.be/3gukhl7fFc0' target=blank><img src="https://github.com/Paliy2/sites/blob/master/img/pencil.jpg"></a>
+<a href='https://youtu.be/3gukhl7fFc0' target="_blank"><img src="https://github.com/Paliy2/sites/blob/master/img/pencil.jpg"></a>
 
 and how the app sees it now: 
 
-<a href='https://youtu.be/3gukhl7fFc0'><img src="https://github.com/Paliy2/sites/blob/master/img/pencil_res.png"></a>
+<a href='https://youtu.be/3gukhl7fFc0' target="_blank"><img src="https://github.com/Paliy2/sites/blob/master/img/pencil_res.png"></a>
 
 
 Differnece isn't great, but all functionality we nned to add is to remove the noise from picture and build the graph. Then we plan to extract the formula of an item, so you can save the whole world data easily just in one row!
 
 Yeah, now it looks terrible, here you see digitized form of the pencil above:
 
-<img src="https://github.com/Paliy2/sites/blob/master/img/reveal.png">
+<a href='https://youtu.be/3gukhl7fFc0' target="_blank"><img src="https://github.com/Paliy2/sites/blob/master/img/reveal.png"></a>
 
 In the close future we are going to finish this project, so you can use it for personal purposes. 
 
