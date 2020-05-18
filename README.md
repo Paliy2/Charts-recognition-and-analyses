@@ -39,7 +39,7 @@ To check the realization, just save your data into 2D numpy array and "feed" it 
 
 Also We are going to make it more usable for everyone, so peple can use our algorithms to photoGraph their everyday life. For example, here you can see image of a pencil:
 
-<img src="https://github.com/Paliy2/sites/blob/master/img/pencil.jpg">
+<a href='https://youtu.be/3gukhl7fFc0' target=blank><img src="https://github.com/Paliy2/sites/blob/master/img/pencil.jpg"></a>
 
 and how the app sees it now: 
 
