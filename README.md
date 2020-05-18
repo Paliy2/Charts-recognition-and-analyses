@@ -43,7 +43,7 @@ Also We are going to make it more usable for everyone, so peple can use our algo
 
 and how the app sees it now: 
 
-<img src="https://github.com/Paliy2/sites/blob/master/img/pencil_res.png">
+<a href='https://youtu.be/3gukhl7fFc0'><img src="https://github.com/Paliy2/sites/blob/master/img/pencil_res.png"></a>
 
 
 Differnece isn't great, but all functionality we nned to add is to remove the noise from picture and build the graph. Then we plan to extract the formula of an item, so you can save the whole world data easily just in one row!
