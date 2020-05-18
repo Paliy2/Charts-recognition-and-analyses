@@ -1,5 +1,5 @@
-pip install keras
-pip install tensorflow=1.2 or higher, but not v-2.+
+!NOT NECESSARY pip install keras
+!NOT NECESSARY pip install tensorflow=1.2 or higher, but not v-2.+
 pip install python-opencv
 pip install numpy
 
