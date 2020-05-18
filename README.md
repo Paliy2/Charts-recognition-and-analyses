@@ -55,3 +55,7 @@ Yeah, now it looks terrible, here you see digitized form of the pencil above:
 In the close future we are going to finish this project, so you can use it for personal purposes. 
 
 But even now you are able to graph form of human or dog or anything else. We have cosy, fast and simple interface, so you can enjoy now. Just download files and stay home)
+
+
+Check out our awesome video by this link
+<a href='https://youtu.be/3gukhl7fFc0' target="_blank">PhotoGraph</a>
