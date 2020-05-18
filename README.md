@@ -20,11 +20,12 @@ root:
     --test.kv
         file written in kivy language to provide fast) and good interface
     --grah_adt.py
-        Contains class GraphADT for working with a graph points
-    --image_adt
+        Contains classes GraphADT and MultiGrapgADT for working with a graph points
+    --adt_new
+      module with some functions that will be needed in a program
     --quantize
     --process
-    
+    -- others(_unimportant_)
   --images
     --alt images that change in process
     
