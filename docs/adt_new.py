@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.cluster import KMeans
-from docs.quantize import recreate_image, limit_colors, cluster_colors, \
+from quantize import recreate_image, limit_colors, cluster_colors, \
     normalize, separate_background, make_frame
 from copy import deepcopy
 from PIL import Image, ImageEnhance, ImageFilter
@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 
 
 def get_start_end(cluster: list):
-    '''Get starting and ending points of a cluster of pixels
+    '''
+    Get starting and ending points of a cluster of pixels
     Returns:
         start (np.array): [min_x, min_y]
             min_x - minimal x of the points
@@ -20,7 +21,21 @@ def get_start_end(cluster: list):
        h_start (float): height* of the cluster at min_x
        h_end   (float): height* of the cluster at max_x
                         
-       *(difference between max and min y's at that point) 
+       *(difference between max and min y's at that point)
+
+    
+    8
+    7  00000______________________> y_min = (6+7)/2
+    6  000000000             h_min = 2
+    5  |   000000000         (2 points with the same x=x_min)
+    4  |      0000000000
+    3  |           000000000
+    2  |                0000000 --> y_max = 2
+    1  |                      |     h_max=1
+    0  x_min                  x_max
+
+    0000000001111111111222222222
+    1234567890123456789012345678
     '''
 
     cluster = np.array(cluster)
@@ -34,7 +49,7 @@ def get_start_end(cluster: list):
     return np.array(start), np.array(end), h_start, h_end
 
 
-def find_neighbors(img: np.array, start_point: tuple, color: int):
+def find_neighbors(img: np.array, start_point: tuple, color: int)->list:
     '''for flood-fill instrument
     Args:
         img (np.array): 2D array of integers
@@ -45,6 +60,7 @@ def find_neighbors(img: np.array, start_point: tuple, color: int):
         points (list): all points in the north\south\east\west directions
         from the give one that have the color
     '''
+
     width, height = img.shape
     x, y = start_point
     points = []
@@ -71,7 +87,7 @@ def find_neighbors(img: np.array, start_point: tuple, color: int):
     return points
 
 
-def fill(frame: np.array, start_point: tuple):
+def fill(frame: np.array, start_point: tuple) -> list:
     '''flood-fill instrument
     Args:
         frame (np.array): 2D array of integers
@@ -81,6 +97,7 @@ def fill(frame: np.array, start_point: tuple):
         analyzed_points (list): all points around the given one
                                 with the same color
     '''
+
     color = frame[start_point]
     img = frame==color
     img[start_point] = 0
@@ -98,6 +115,7 @@ def fill(frame: np.array, start_point: tuple):
             img[p[0]][p[1]] = 0
     return analyzed_points
 
+
 class ImageADT():
     def __init__(self, path_to_image):
         self.dir = path_to_image
@@ -113,6 +131,7 @@ class ImageADT():
         Returns:
             modified img
         '''
+
         return ImageEnhance.Color(img).enhance(n)
 
     @staticmethod
@@ -125,6 +144,7 @@ class ImageADT():
         Returns:
             modified img
         '''
+
         return ImageEnhance.Contrast(img).enhance(n)
 
     @staticmethod
@@ -138,6 +158,7 @@ class ImageADT():
         Returns:
             resized img
         '''
+
         img.thumbnail((width, height), Image.ANTIALIAS)
         return img
 
@@ -151,6 +172,7 @@ class ImageADT():
         Returns:
             properly resized img
         '''
+
         width, height = img.width, img.height
         if img.width > max_width:
             width, height = max_width, int(height*max_width/width)
@@ -167,11 +189,13 @@ class ImageADT():
         Returns:
             modified img
         '''
+
         img = img.filter(ImageFilter.GaussianBlur(radius=s))
         return img
 
     def analyze(self, n_colors=3):
         '''Extract graphs from an image'''
+
         img = deepcopy(self.img)
         img, (width, height) = self.scale_image(img)
         #width, height = img.width, img.height
@@ -205,13 +229,29 @@ class ImageADT():
 
     @staticmethod
     def extract_graphs(frame, threshold):
+        '''Find isolated regions of pixels of the same class on the image
+
+        1) Applies flood-fill instrument to non-background pixels
+           to find regions of the same class
+        2) Connect regions found above based on their parameters
+        3) Return a list of graphs
+        '''
+
+        # thrreshold to determine whether clusters are the same graph
         dist_threshold = np.array([frame.shape[0], frame.shape[1]])/100
         eps = frame.shape[1]/80
 
         by_color = {}
-        all_points = [(i, j) for i in range(frame.shape[0]) for j in range(frame.shape[1]) if frame[i][j]]
+        # non-background points
+        all_points = [(i, j) for i in range(frame.shape[0])\
+                      for j in range(frame.shape[1]) if frame[i][j]]
 
+
+        # too small blobs of color are considered noise
         area_threshold = frame.shape[0]*frame.shape[1]//8000
+       
+
+        # 1) Apply flood-fill instrument to find regions of the same class
         while all_points:
             x, y = all_points.pop(0)
             if frame[x][y] not in by_color:
@@ -224,6 +264,7 @@ class ImageADT():
             all_points = list(filter(lambda x: not (x in points), all_points))
 
 
+        # 2) Connect regions found above based on their parameters
         previous_len = sum([len(by_color[i]) for i in by_color])+1
 
         while previous_len > sum([len(by_color[i]) for i in by_color]):
@@ -245,10 +286,12 @@ class ImageADT():
                         j += 1
                     i += 1
 
+        # 3) Combine results and return
         graphs = []
         for color in by_color:
             graphs += by_color[color]
 
+        # filter assumed "graphs" by the number of points given by user
         graphs = list(filter(lambda x: len(x)>threshold, graphs))
         return graphs
 
@@ -264,6 +307,7 @@ class ImageADT():
         Returns:
             form (np.array): form of 0 and 1
         '''
+
         form = np.zeros((width, height))
         for i, j in graph:
             form[i][j] = 1
@@ -273,9 +317,11 @@ class ImageADT():
     def plot_graphs(graphs, show=False):
         '''plot all graphs and save\show
         Args:
-            graphs (list of np.arrays): pixels identified as individual graphs
+            graphs (list of np.arrays): pixels identified
+            as individual graphs
             show (bool): show the image if True, save otherwise
         '''
+
         for i in range(len(graphs)):
             g = np.array(graphs[i])
             plt.scatter(g[:, 1], g[:, 0])
@@ -298,10 +344,3 @@ if __name__ == '__main__':
     GraphADT(graphs[-1]).plot()
     mgraph = Multigraph(graphs)
     mgraph.show()
-    # n_clusters = [7, 2, 3, 3, 7, 3, 5, 5, 5]
-    # for i, n in zip(images[11:], n_clusters[3:]):
-    #     print(n)
-    #     img = ImageADT(i)
-    #     graphs = img.analyze(n)
-    #     mgraph = Multigraph(graphs)
-    #     mgraph.show()
