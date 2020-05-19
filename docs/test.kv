@@ -63,7 +63,7 @@
             Widget:
                 size_hint_x: .1
         Image:  # lIke a Camera span
-            source: '../images/border_red.png'
+            source: 'images/border_red.png'
             size_hint_y: 0.5
             opacity: 0.3
         Widget:
@@ -96,8 +96,9 @@
     #                 152/255, 152/255, 153/255, 1
 
                     on_press:
-                        root.onCameraClick()
+                        root.ids.imglbl.text = 'Please, wait, big image can take a long time'
                         root.ok = False
+                        root.onCameraClick()
                         app.rs.update_image()
             AnchorLayout:
                 anchor_x: 'center'
@@ -112,11 +113,14 @@
                     on_press:
                         self.background_color = (1.0, 0.0, 0.0, .87)
                         self.size = (65, 65)
+                        self.text = 'Please, wait'
                         root.load_file()
 
                     on_release:
                         self.background_color = (1, 0, 0, .4)
                         self.size = (60, 60)
+                        self.text = 'Load file'
+                        app.rs.update_image()
 
 
         Widget:
@@ -152,7 +156,7 @@
         Image:
             id: logo_img
             size_hint_y: 0.5
-            source: '../images/logo2.png'
+            source: 'images/logo2.png'
 
         Widget:
             size_hint_y: 0.05
@@ -183,11 +187,24 @@
                 Rectangle:
                     pos: self.pos
                     size: self.size
-
-        Image:
-            id: selfie_img
-            nocache: True
-            source: root.img_source
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                size_hint_x: .13
+                text: '<'
+                on_release:
+                    root.ids.selfie_img.source = root.prev_img()
+                    root.update_image()
+            Image:
+                id: selfie_img
+                nocache: True
+                source: root.img_source
+            Button:
+                size_hint_x: .13
+                text: '>'
+                on_release:
+                    root.ids.selfie_img.source = root.next_img()
+                    root.update_image()
         Widget:
             size_hint_y: 0.05
         BoxLayout:
@@ -291,7 +308,7 @@
         Image:
             size_hint_y: .55
             id: res_img
-            source: '../prediction.png'
+            source: 'prediction.png'
         Widget:
             size_hint_y: .05
         BoxLayout:
@@ -327,6 +344,6 @@
         pos_hint: {'x': .2, 'y': .1}
         text: 'Done'
         on_press:
-            app.ms.popupWindow.dismiss()
-        on_release:
             app.ms.leave_input(root.ids.input.text)
+        on_release:
+            app.ms.popupWindow.dismiss()

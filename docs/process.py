@@ -1,8 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.utils import shuffle
-
+from PIL import Image
 
 def recreate_image(codebook, labels, w, h):
     """Recreate the (compressed) image from the code book & labels"""
@@ -69,6 +68,15 @@ def quantize(img, h=4, w=4):
 
 
 def read_image(i_name):
-    img = plt.imread(i_name)
-    img = plt.imread(i_name)
+    img = Image.open(i_name)
+    img = Image.open(i_name)
     return img
+
+def save_image(img):
+    img = img.save('images/selfie.png')
+    print('selfie re-saved')
+
+
+if __name__ == '__main__':
+    img = read_image('images/selfie.png')
+    save_image(img)

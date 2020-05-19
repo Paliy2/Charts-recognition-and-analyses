@@ -1,10 +1,10 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
-from crop_black_background import crop_image
-from graph_adt import GraphADT, Multigraph
+from docs.crop_black_background import crop_image
+from docs.graph_adt import GraphADT, Multigraph
 from kivy.uix.popup import Popup
-from adt_new import ImageADT
-from process import read_image, save_image
+from docs.adt_new import ImageADT
+from docs.process import read_image, save_image
 import time
 
 
@@ -41,13 +41,13 @@ class PopupScreen(Screen):
 
 
 class ResultScreen(Screen):
-    img_source = '../images/selfie.png'
+    img_source = 'images/selfie.png'
     global graph
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.n_graphs = 1
-        self.im_dirs = ['../images/selfie.png', 'color_blobs.png', 'edges.png']
+        self.im_dirs = ['images/selfie.png', 'color_blobs.png', 'edges.png']
 
     def save_data(self):
         graph.to_csv(f_name='result.csv')
@@ -90,13 +90,13 @@ class MainScreen(Screen):
     def onCameraClick(self, *args):
         if not self.ok:
             print('here ok ne ok')
-            self.ids.camera.export_to_png('../images/selfie.png')
+            self.ids.camera.export_to_png('images/selfie.png')
             # process-only function
             crop_image()
             print('cropped, analyzing')
         # time.sleep(.3)
         print('IMAGEADT:')
-        img = ImageADT('../images/selfie.png')
+        img = ImageADT('images/selfie.png')
         ResultScreen().update_image()
         print('img updated')
         self.parent.current = 'result_screen'
@@ -165,6 +165,9 @@ class TestApp(App):
         return self.sm
 
 
+def run():
+    TestApp().run()
+
 if __name__ == '__main__':
     global graph
-    TestApp().run()
+    run()

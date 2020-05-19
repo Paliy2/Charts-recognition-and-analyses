@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.cluster import KMeans
-from quantize import recreate_image, limit_colors, cluster_colors, \
+from docs.quantize import recreate_image, limit_colors, cluster_colors, \
     normalize, separate_background, make_frame
 from copy import deepcopy
 from PIL import Image, ImageEnhance, ImageFilter
@@ -290,9 +290,8 @@ class ImageADT():
 
 if __name__ == '__main__':
     from graph_adt import Multigraph, GraphADT
-    # from images import images # list of paths to test images
-    # img = ImageADT('../images/pencil.jpg')
-    img = ImageADT('../images/selfie.png')
+
+    img = ImageADT('../edges.png')
 
     graphs = img.analyze(2)
 
